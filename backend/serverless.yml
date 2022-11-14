@@ -1,20 +1,20 @@
 # TODO: Change the name of the org 
 org: damkenny
 app: serverless-todo-app-1
-service: serverless-todo-app-1
+service: serverless-todo-app-sv1
 frameworkVersion:  2.21.1
 
 plugins:
   - serverless-webpack
   - serverless-iam-roles-per-function
-  - serverless-reqvalidator-tracing
-  - serverless-aws-documentation
-
+  - serverless-plugin-tracing
+  
 
 provider:
   name: aws
   runtime: nodejs12.x
   # lambdaHashingVersion: '20201221'
+  
   stage: ${opt:stage, 'dev'}
   region: ${opt:region, 'us-east-1'}
 
@@ -25,23 +25,26 @@ provider:
   # Use these variables in the functions and resouorces section below. For example, 
   # ${self:provider.environment.ATTACHMENT_S3_BUCKET}
   environment:
-    TODOS_TABLE: Todos-${self:provider.stage}
+    TODOS_TABLE: Serverless-c5-to-do-app-5-${self:provider.stage}
     TODOS_CREATED_AT_INDEX: CreatedAtIndex
-    ATTACHMENT_S3_BUCKET: serverless-c4-todo-images-${self:provider.stage}
+    ATTACHMENT_S3_BUCKET: serverless-c5-to-do-images-${self:provider.stage}
     SIGNED_URL_EXPIRATION: 300
+    PROJECT_NAME: serverless-c5-to-do-app-5-
+    INDEX_NAME: $(self:provider.environment.TODOS_CREATED_AT_INDEX)
 
-  logs:
-    # Enable API Gateway logs
-    restApi: true 
+  
+# logs:
+  #   # Enable API Gateway logs
+  #   restApi: true 
 
-  iam:
-    role:
-      statements:
-        - Effect: Allow
-          Action:
-            - xray:PutTelemetryRecords
-            - xray:PutTraceSegments
-          Resource: "*"
+  # iam:
+  #   role:
+  #     statements:
+  #       - Effect: Allow
+  #         Action:
+  #           - xray:PutTelemetryRecords
+  #           - xray:PutTraceSegments
+  #         Resource: "*"
 
 
 functions:
